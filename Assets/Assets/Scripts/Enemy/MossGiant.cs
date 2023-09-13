@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -5,28 +6,51 @@ using UnityEngine;
 
 public class MossGiant : Enemy
 {
-    int speed = 3;
-    private bool _switch = false;
-    public override void Update()
+    private Vector3 _destination = new Vector3();
+    private Animator _animator;
+    private SpriteRenderer _spriteRenderer;
+
+    public void Start()
     {
-   
-        if (!_switch)
+        speed = 3;
+        _animator = GetComponentInChildren<Animator>();
+        _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+    }
+
+    public override void Update()
+    {   
+        if (_animator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
         {
-            //transform.position = Vector3.MoveTowards(transform.position, pointB.transform.position, speed*Time.deltaTime);
-            transform.Translate(Vector3.right * speed * Time.deltaTime);
+            return;
         }
-        else
+        Movement();
+ 
+    }
+
+    private void Movement()
+    {
+        // Primero animación de Idle y después flip, por eso el flip va aquí y no justo después del trigger de la animación, así el flip se hace después (mirar que es el _destination y no la position)
+        if (_destination == pointA.position)
         {
-            //transform.position = Vector3.MoveTowards(transform.position, pointA.transform.position, speed*Time.deltaTime);
-            transform.Translate(Vector3.left * speed * Time.deltaTime);
+            _spriteRenderer.flipX = true;
+        }
+        else{
+            _spriteRenderer.flipX = false;
         }
 
-        // if (transform.position == pointA.position || transform.position == pointB.position)
-        if (transform.position.x <= pointA.position.x || transform.position.x >= pointB.position.x)
+        if (transform.position.x == pointA.position.x)
         {
-            _switch = !_switch;
+            _destination = pointB.position;
+            _animator.SetTrigger("Idle");
+            _spriteRenderer.flipX = false;
+        }
+        else if (transform.position.x == pointB.position.x)
+        {
+            _destination = pointA.position;
+            _animator.SetTrigger("Idle");
             
         }
-       
+
+        transform.position = Vector3.MoveTowards(transform.position, _destination, speed*Time.deltaTime);
     }
 }
