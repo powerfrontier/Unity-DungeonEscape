@@ -15,12 +15,17 @@ public class Player : MonoBehaviour
 
     private PlayerAnimation _animScript;
     private SpriteRenderer _spriteRenderer;
+    private SpriteRenderer _swordArcSpriteRenderer;
+    private Transform _swordArcSpriteTransform;
 
     // Start is called before the first frame update
     void Start()
     {
         _animScript = GetComponent<PlayerAnimation>();
-        _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        SpriteRenderer[] sr = GetComponentsInChildren<SpriteRenderer>();
+        _spriteRenderer = sr[0];
+        _swordArcSpriteRenderer = sr[1];
+        _swordArcSpriteTransform = transform.GetChild(1);
     }
 
     // Update is called once per frame
@@ -53,13 +58,18 @@ public class Player : MonoBehaviour
         _rigidBody.velocity = new Vector2(horizontalInput * _speed, _rigidBody.velocity.y);
 
         
-        if (horizontalInput >= 0)
+        if (horizontalInput > 0)
         {
             _spriteRenderer.flipX = false;
+            _swordArcSpriteRenderer.flipY = false;
+            _swordArcSpriteTransform.localPosition = new Vector3(1.01f, _swordArcSpriteTransform.localPosition.y, _swordArcSpriteTransform.localPosition.z);
         }
-        else
+        else if (horizontalInput < 0)
         {
             _spriteRenderer.flipX = true;
+            _swordArcSpriteRenderer.flipY = true;
+            _swordArcSpriteTransform.localPosition = new Vector3(-1.01f, _swordArcSpriteTransform.localPosition.y, _swordArcSpriteTransform.localPosition.z);
+
         }
 
         _animScript.Move(horizontalInput);

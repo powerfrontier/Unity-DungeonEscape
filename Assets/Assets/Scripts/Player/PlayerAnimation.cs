@@ -14,9 +14,9 @@ public class PlayerAnimation : MonoBehaviour
         Animator[] animators = GetComponentsInChildren<Animator>();
         _anim = animators[0];
         _swordAnim = animators[1];
+        // _swordAnim = transform.GetChild(1).GetComponent<Animator>();
     }
 
-    // Update is called once per frame
     public void Move(float move)
     {
         _anim.SetFloat("Move", Mathf.Abs(move));
