@@ -14,8 +14,51 @@ public abstract class Enemy : MonoBehaviour
     public Transform pointA, pointB;
     // Start is called before the first frame update
 
+    protected Vector3 destination = new Vector3();
+    protected Animator animator;
+    protected SpriteRenderer spriteRenderer;
+
+
+    public virtual void Start()
+    {
+        animator = GetComponentInChildren<Animator>();
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+    }
 
     // Update is called once per frame
-    public abstract void Update();
+    public virtual void Update()
+    {
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+        {
+            return;
+        }
+        Movement();
+    }
+
+    public virtual void Movement()
+    {
+        // Primero animación de Idle y después flip, por eso el flip va aquí y no justo después del trigger de la animación, así el flip se hace después (mirar que es el _destination y no la position)
+        if (destination == pointA.position)
+        {
+            spriteRenderer.flipX = true;
+        }
+        else{
+            spriteRenderer.flipX = false;
+        }
+
+        if (transform.position.x == pointA.position.x)
+        {
+            destination = pointB.position;
+            animator.SetTrigger("Idle");
+        }
+        else if (transform.position.x == pointB.position.x)
+        {
+            destination = pointA.position;
+            animator.SetTrigger("Idle");
+            
+        }
+
+        transform.position = Vector3.MoveTowards(transform.position, destination, speed*Time.deltaTime);
+    }
 
 }
