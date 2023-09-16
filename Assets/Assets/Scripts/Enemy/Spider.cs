@@ -13,4 +13,9 @@ public class Spider : Enemy
         spiderVar = 2;
     }
 
+    public override void Damage()
+    {
+        
+    }
+
 }

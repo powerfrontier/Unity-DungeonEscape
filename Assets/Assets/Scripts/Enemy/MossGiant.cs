@@ -14,6 +14,11 @@ public class MossGiant : Enemy
         mossGiantVar= 3;        
     }
 
+    public override void Damage()
+    {
+        
+    }
+
 
 
 }

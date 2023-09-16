@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Enemy : MonoBehaviour
+public abstract class Enemy : MonoBehaviour, IDamageable
 {
 
     [SerializeField]
@@ -12,11 +12,15 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField]
     protected int gems;
     public Transform pointA, pointB;
-    // Start is called before the first frame update
+
 
     protected Vector3 destination = new Vector3();
     protected Animator animator;
     protected SpriteRenderer spriteRenderer;
+
+    public int Health {get; set;}
+
+    public abstract void Damage();
 
 
     public virtual void Start()
@@ -28,7 +32,8 @@ public abstract class Enemy : MonoBehaviour
     // Update is called once per frame
     public virtual void Update()
     {
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Idle") ||
+            animator.GetCurrentAnimatorStateInfo(0).IsName("Hit") )
         {
             return;
         }
