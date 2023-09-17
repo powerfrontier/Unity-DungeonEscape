@@ -19,7 +19,9 @@ public class Skeleton : Enemy
         
         if (Health < 1)
         {
-            Destroy(this.gameObject);
+            animator.SetBool("Death", true);
         }
     }
+
+
 }

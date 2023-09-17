@@ -33,7 +33,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     public virtual void Update()
     {
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("Idle") ||
-            animator.GetCurrentAnimatorStateInfo(0).IsName("Hit") )
+            animator.GetCurrentAnimatorStateInfo(0).IsName("Hit")  ||
+            animator.GetCurrentAnimatorStateInfo(0).IsName("Death"))
         {
             return;
         }
