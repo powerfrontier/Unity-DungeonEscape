@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IDamageable
 {
     [SerializeField]
     private Rigidbody2D _rigidBody;
@@ -17,6 +17,8 @@ public class Player : MonoBehaviour
     private SpriteRenderer _spriteRenderer;
     private SpriteRenderer _swordArcSpriteRenderer;
     private Transform _swordArcSpriteTransform;
+
+    public int Health {get; set;}
 
     // Start is called before the first frame update
     void Start()
@@ -100,6 +102,11 @@ public class Player : MonoBehaviour
         {
             return false;
         }
+    }
+
+    public void Damage()
+    {
+        Debug.Log("Player damage");
     }
 
    

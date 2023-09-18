@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,6 +18,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     protected Vector3 destination = new Vector3();
     protected Animator animator;
     protected SpriteRenderer spriteRenderer;
+    protected Player player;
 
     public int Health {get; set;}
 
@@ -27,6 +29,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     {
         animator = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
     }
 
     // Update is called once per frame
@@ -34,11 +37,18 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     {
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("Idle") ||
             animator.GetCurrentAnimatorStateInfo(0).IsName("Hit")  ||
-            animator.GetCurrentAnimatorStateInfo(0).IsName("Death"))
+            animator.GetCurrentAnimatorStateInfo(0).IsName("Death") ||
+            animator.GetCurrentAnimatorStateInfo(0).IsName("Attack") )
         {
             return;
         }
         Movement();
+        Attack();
+    }
+
+    public virtual void Attack()
+    {
+        
     }
 
     public virtual void Movement()
