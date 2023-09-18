@@ -19,6 +19,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     protected Animator animator;
     protected SpriteRenderer spriteRenderer;
     protected Player player;
+    protected float attackRange;
+    protected float maxAttackRange;
 
     public int Health {get; set;}
 

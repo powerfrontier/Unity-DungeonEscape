@@ -8,13 +8,14 @@ public class Skeleton : Enemy
 
 
     private bool _cooldown = true;
-    private float _attackRange;
+    
     public override void Start()
     {
         base.Start();
         health = 3;
         Health = health;
-        _attackRange = Random.Range(0.3f, 2f);
+        maxAttackRange = 2f;
+        attackRange = Random.Range(0.3f, maxAttackRange);
     }
     public override void Damage()
     {
@@ -33,7 +34,7 @@ public class Skeleton : Enemy
         float distance = Vector3.Distance(player.transform.localPosition, transform.localPosition);
         //Debug.Log(distance);
      
-        if (distance < _attackRange & _cooldown)
+        if (distance < attackRange & _cooldown)
         {
             Vector3 direction = player.transform.localPosition - transform.localPosition;
             if (direction.x > 0 )
@@ -54,7 +55,7 @@ public class Skeleton : Enemy
     IEnumerator CoolDown()
     {
         yield return new WaitForSeconds(1.5f);
-        _attackRange = Random.Range(0.3f, 2f);
+        attackRange = Random.Range(0.3f, maxAttackRange);
         //Debug.Log("Range: " + _attackRange);
         _cooldown = true;
     }
