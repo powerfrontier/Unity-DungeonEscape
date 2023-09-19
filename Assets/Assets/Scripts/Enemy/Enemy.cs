@@ -1,6 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Enemy : MonoBehaviour, IDamageable
@@ -13,19 +11,15 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     [SerializeField]
     protected int gems;
     public Transform pointA, pointB;
-
-
     protected Vector3 destination = new Vector3();
     protected Animator animator;
     protected SpriteRenderer spriteRenderer;
     protected Player player;
     protected float attackRange;
     protected float maxAttackRange;
+    private bool _cooldown = true;
 
-    public int Health {get; set;}
-
-    public abstract void Damage();
-
+  
 
     public virtual void Start()
     {
@@ -34,7 +28,6 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
     }
 
-    // Update is called once per frame
     public virtual void Update()
     {
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("Idle") ||
@@ -46,12 +39,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         }
         Movement();
         Attack();
-    }
-
-    public virtual void Attack()
-    {
-        
-    }
+    }   
 
     public virtual void Movement()
     {
@@ -78,5 +66,50 @@ public abstract class Enemy : MonoBehaviour, IDamageable
 
         transform.position = Vector3.MoveTowards(transform.position, destination, speed*Time.deltaTime);
     }
+
+    public virtual void Attack()
+    {
+        float distance = Vector3.Distance(player.transform.localPosition, transform.localPosition);
+     
+        if (distance < attackRange & _cooldown)
+        {
+            Vector3 direction = player.transform.localPosition - transform.localPosition;
+            
+            if (direction.x > 0 )
+            {
+                spriteRenderer.flipX = false;
+            }
+            else
+            {
+                spriteRenderer.flipX = true;
+            }
+
+            animator.SetTrigger("Attack");
+            _cooldown = false;
+            StartCoroutine(CoolDown());
+        }
+    }
+
+    IEnumerator CoolDown()
+    {
+        yield return new WaitForSeconds(1.5f);
+        attackRange = Random.Range(0.3f, maxAttackRange);
+        _cooldown = true;
+    }
+
+    public int Health {get; set;}
+
+    public virtual void Damage()
+    {
+        Debug.Log("Hit:" + this.GetType());
+        Health--;
+        animator.SetTrigger("Hit");
+        
+        if (Health < 1)
+        {
+            animator.SetBool("Death", true);
+        }
+    }
+
 
 }
