@@ -13,4 +13,5 @@ public class MossGiant : Enemy
         attackRange = Random.Range(0.3f, maxAttackRange);        
     }
 
+
 }

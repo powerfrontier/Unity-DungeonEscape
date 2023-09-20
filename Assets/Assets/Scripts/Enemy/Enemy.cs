@@ -108,8 +108,9 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         if (Health < 1)
         {
             animator.SetBool("Death", true);
+            Destroy(this.gameObject, 5f);
         }
     }
 
-
+    //TODO: error: de estado death se puede ir a hit otra vez -> retocar mapa de estados de animaciones
 }
