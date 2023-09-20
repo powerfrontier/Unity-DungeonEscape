@@ -38,7 +38,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable
             return;
         }
         Movement();
-        Attack();
+        if (player != null)
+            Attack();
     }   
 
     public virtual void Movement()

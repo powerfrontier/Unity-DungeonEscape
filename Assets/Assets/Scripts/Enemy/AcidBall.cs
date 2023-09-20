@@ -39,7 +39,9 @@ public class AcidBall : MonoBehaviour
         if (hit != null && other.tag == "Player") //Para que no haya "fuego amigo" entre enemigos
         {
             hit.Damage();
+            Destroy(this.gameObject);
         }
+
 
     }
 }

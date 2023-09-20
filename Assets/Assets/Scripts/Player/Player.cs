@@ -12,6 +12,8 @@ public class Player : MonoBehaviour, IDamageable
     private float _jumpForce = 3;
     [SerializeField]
     private float _speed = 2.5f;
+    [SerializeField]
+    private int health;
 
     private PlayerAnimation _animScript;
     private SpriteRenderer _spriteRenderer;
@@ -28,6 +30,7 @@ public class Player : MonoBehaviour, IDamageable
         _spriteRenderer = sr[0];
         _swordArcSpriteRenderer = sr[1];
         _swordArcSpriteTransform = transform.GetChild(1);
+        Health = health;
     }
 
     // Update is called once per frame
@@ -106,7 +109,15 @@ public class Player : MonoBehaviour, IDamageable
 
     public void Damage()
     {
-        Debug.Log("Player damage");
+        Health--;
+        Debug.Log("Player damage. Health: " + Health);
+        _animScript.Hit();
+        
+        if (Health < 1)
+        {
+            _animScript.Death(true);
+            Destroy(this.gameObject, 5f);
+        }
     }
 
    
