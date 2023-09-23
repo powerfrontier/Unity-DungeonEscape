@@ -24,9 +24,16 @@ public class Spider : Enemy
     public override void Damage()
     {
         Debug.Log("Hit:" + this.GetType());
-
-        animator.SetTrigger("Death");
-        Destroy(this.gameObject, 5f);
+        if (Health > 0)
+        {
+            Health--;
+            if (Health < 1)
+            {
+                animator.SetTrigger("Death");
+                StartCoroutine(Diamonds());
+                Destroy(this.gameObject, 5f);
+            }
+        }
 
     }
 

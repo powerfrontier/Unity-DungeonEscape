@@ -18,6 +18,10 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     protected float attackRange;
     protected float maxAttackRange;
     private bool _cooldown = true;
+    [SerializeField]
+    private GameObject _diamond;
+    [SerializeField]
+    private float _diamondDistance = 0.5f;
 
   
 
@@ -103,15 +107,64 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     public virtual void Damage()
     {
         Debug.Log("Hit:" + this.GetType());
-        Health--;
-        animator.SetTrigger("Hit");
-        
-        if (Health < 1)
+        if(Health > 0) //Para que no entre multiples veces cuando esté ya en Death (health==0)
         {
-            animator.SetBool("Death", true);
-            Destroy(this.gameObject, 5f);
+            Health--;
+            animator.SetTrigger("Hit");
+            
+            if (Health < 1)
+            {
+                animator.SetBool("Death", true);
+                StartCoroutine(Diamonds());
+                Destroy(this.gameObject, 5f);
+            }
         }
     }
 
+    protected IEnumerator Diamonds()
+    {
+        yield return new WaitForSeconds(3);
+        DropDiamonds();
+    }
+
+    protected void DropDiamonds()
+    {
+        if (gems%2 == 0)
+        {
+            Vector3 position = new Vector3(transform.position.x - _diamondDistance/2, transform.position.y, transform.position.z);
+            Instantiate(_diamond, position, Quaternion.identity);
+            for (int i=1; i<gems/2; i++)
+            {
+                position = new Vector3(transform.position.x - _diamondDistance/2 - _diamondDistance*i, transform.position.y, transform.position.z);
+                Instantiate(_diamond, position, Quaternion.identity);
+            }
+            position = new Vector3(transform.position.x + _diamondDistance/2, transform.position.y, transform.position.z);
+            Instantiate(_diamond, position, Quaternion.identity);
+            for (int i=1; i<gems/2; i++)
+            {
+                position = new Vector3(transform.position.x + _diamondDistance/2 + _diamondDistance*i, transform.position.y, transform.position.z);
+                Instantiate(_diamond, position, Quaternion.identity);
+            }
+        }
+        else
+        {
+            Instantiate(_diamond, transform.position, Quaternion.identity);
+            for (int i=1; i<=gems/2; i++)
+            {
+                Vector3 position = new Vector3(transform.position.x - _diamondDistance*i, transform.position.y, transform.position.z);
+                Instantiate(_diamond, position, Quaternion.identity);
+            }
+            for (int i=1; i<=gems/2; i++)
+            {
+                Vector3 position = new Vector3(transform.position.x + _diamondDistance*i, transform.position.y, transform.position.z);
+                Instantiate(_diamond, position, Quaternion.identity);
+            }
+
+        }
+    }
+
+
+
     //TODO: error: de estado death se puede ir a hit otra vez -> retocar mapa de estados de animaciones
+
 }

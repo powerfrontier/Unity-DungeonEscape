@@ -14,13 +14,17 @@ public class Player : MonoBehaviour, IDamageable
     private float _speed = 2.5f;
     [SerializeField]
     private int health;
-
+    [SerializeField]
+    private int gems;
     private PlayerAnimation _animScript;
     private SpriteRenderer _spriteRenderer;
     private SpriteRenderer _swordArcSpriteRenderer;
     private Transform _swordArcSpriteTransform;
 
     public int Health {get; set;}
+
+    [SerializeField]
+    public int Gems {get; set;}
 
     // Start is called before the first frame update
     void Start()
@@ -31,6 +35,8 @@ public class Player : MonoBehaviour, IDamageable
         _swordArcSpriteRenderer = sr[1];
         _swordArcSpriteTransform = transform.GetChild(1);
         Health = health;
+        gems = 0;
+        Gems = gems;
     }
 
     // Update is called once per frame
@@ -119,6 +125,8 @@ public class Player : MonoBehaviour, IDamageable
             Destroy(this.gameObject, 5f);
         }
     }
+
+    
 
    
 }
