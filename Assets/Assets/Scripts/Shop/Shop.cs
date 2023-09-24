@@ -9,10 +9,10 @@ public class Shop : MonoBehaviour
 {
     [SerializeField]
     private GameObject _shopPanel;
-    [SerializeField]
-    private TextMeshProUGUI _flameSwordPrice;//TODO: hacer funciones puente en el start o el ontriggerEnter que den el coste en int y el tratamiento del TexMeshPro se haga en el uimanager
 
     private int _currentItemSelected;
+
+    Player player;
     
     // Start is called before the first frame update
     void Start()
@@ -24,7 +24,7 @@ public class Shop : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            Player player = other.GetComponent<Player>();
+            player = other.GetComponent<Player>();
             if (player != null)
             {
                 UIManager.Instance.OpenShop(player.Gems);
@@ -66,20 +66,12 @@ public class Shop : MonoBehaviour
 
     public void BuyItem()
     {
-        int cost = 0;
-        switch (_currentItemSelected)
-        {
-            case 0:
-                cost = int.Parse(_flameSwordPrice.text);//TODO: tratar la G
-                
-                break;
-        }
-
-        Player player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        int cost = UIManager.Instance.GetCost(_currentItemSelected);
+        
         if (cost <=  player.Gems)
         {
             player.Gems -= cost;
-            //TODO: que se actualice el marcador de gemas
+            UIManager.Instance.OpenShop(player.Gems);
             Debug.Log("Item " + _currentItemSelected + "Purchased!");
         }
         else
@@ -87,4 +79,6 @@ public class Shop : MonoBehaviour
             Debug.Log("Item " + _currentItemSelected + "not enought gems");
         }
     }
+
+    
 }

@@ -22,6 +22,13 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI playerGems;
     public Image selectionSlider;
 
+    [SerializeField]
+    private TextMeshProUGUI _flameSwordPrice;
+    [SerializeField]
+    private TextMeshProUGUI _bootsOfFlightPrice;
+    [SerializeField]
+    private TextMeshProUGUI _keyToCastlePrice;
+
     private void Awake()
     {
         _instance = this;
@@ -35,5 +42,25 @@ public class UIManager : MonoBehaviour
     public void UpdateShopSelection(int yPos)
     {
         selectionSlider.rectTransform.anchoredPosition = new Vector2(selectionSlider.rectTransform.anchoredPosition.x, yPos);
+    }
+
+    public int GetCost(int item)
+    {
+        int cost = 0;
+
+        switch (item)
+        {
+            case 0:
+                cost = int.Parse(_flameSwordPrice.text.Remove(_flameSwordPrice.text.Length-1));
+                break;
+            case 1:
+                cost = int.Parse(_bootsOfFlightPrice.text.Remove(_bootsOfFlightPrice.text.Length-1));
+                break;
+            case 2:
+                cost = int.Parse(_keyToCastlePrice.text.Remove(_keyToCastlePrice.text.Length-1));
+                break;
+        }
+
+        return cost;
     }
 }
