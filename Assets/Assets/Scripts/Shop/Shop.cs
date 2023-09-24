@@ -70,6 +70,10 @@ public class Shop : MonoBehaviour
         
         if (cost <=  player.Gems)
         {
+            if (_currentItemSelected == 2)
+            {
+                GameManager.Instance.hasKeyToCastle = true;
+            }
             player.Gems -= cost;
             UIManager.Instance.OpenShop(player.Gems);
             Debug.Log("Item " + _currentItemSelected + "Purchased!");
