@@ -35,7 +35,7 @@ public class Player : MonoBehaviour, IDamageable
         _swordArcSpriteRenderer = sr[1];
         _swordArcSpriteTransform = transform.GetChild(1);
         Health = health;
-        gems = 0;
+        gems = 400;
         Gems = gems;
     }
 
